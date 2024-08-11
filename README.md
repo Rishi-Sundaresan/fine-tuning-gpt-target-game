@@ -1,12 +1,12 @@
 # Fine Tuned GPT 3.5 for 24-style Math Puzzle
 I fine-tuned GPT 3.5-turbo to be better at a math puzzle game, specifically a 24-style game. In this game, you are given 4 numbers, and you must add/subtract/multiply/divide between them to reach a target number. You must use all the numbers.
 
-GPT is notoriously bad at precise math calculations, so I wanted to see if fine-tuning could improve it's performance. I used a target number of 36 instead of 24 since it had a larger problem space.
-
+GPT is notoriously bad at precise math calculations, so I wanted to see if fine-tuning could improve it's performance. Note that the results below are after a few tries at different ways to construct the data and fine-tune the model.
 
 
 ## Training
-I generated hundreds of different examples of 4 numbers being used to hit 36. I constructed each training example for the fine-tuning job as follows:
+### Data Curation
+I used a target number of 36 instead of 24 since it had a larger problem space. I generated hundreds of different examples of 4 numbers being used to hit 36. I constructed each training example for the fine-tuning job as follows:
 
 For each example, I gave the model a detailed context prompt telling it how to structure it's answers. The prompt is delivered as a system message for each example: 
 ```{"role": "system", "content": context_prompt},```
@@ -37,10 +37,40 @@ Result: 36
 
 A couple of notes here:
 1) I included listing the intermediate steps, since in experimentation, doing this prevented the model from creating incorrect expressions that lead to the target, i.e. 1+2+3+4 = 36. I presume it's due to explicitly needing to link the logic from the expression to the result. 
-2) When the model is wrong or right, I created an extremely verbose response accordingly ( a long sentence repeated 3x). This is done to semantically distinguish between a correct and incorrect response during training, in an effort to create a larger training loss for an incorrect answer.
+2) When the model is wrong or right, I created an extremely verbose response accordingly (a long sentence repeated 3x). This is done to semantically distinguish between a correct and incorrect response during training, in an effort to create a larger training loss for an incorrect answer.
 
 The actual user prompt is constructed as follows: ```{"role": "user", "content": "target: 36, numbers: [2, 2, 1, 9]"}```
 
 
+I created a dataset of 700 example setups (all of which have solutions) by the following process
+1) Randomly select 4 integers (1-12 inclusive)
+2) use a dynamic programming algorithm to determine to find a solution, if exists (description coming in another repo)
+3) Repeat 1-2 until we get 700 setups with solutions.
+
+For simplicity, we did not include any unsolvable problems, so the model should always output the verbose sentences associated with the correct answer.
+
+### Fine-Tuning
+I then made a 500-200 train-test split, and uploaded the training file to the OpenAI fine-tuning UI to fine-tune GPT 3.5-turbo-1106 on the data. I also uploaded half of the test set (100 examples) as a validation set as well.
+![image](https://github.com/user-attachments/assets/69ab6acb-def8-4a72-baa2-e19af1016500)
+
+Overall it does seem that the training loss converged fairly quickly, but with quite a bit of noise. Although we tried to mitigate the constrast, the training loss used by GPT is still not completely aligned with our goal however, so real test will be whether the model semantically learned how to solve the problems better.
+
+## Evaluation
+We count an inference output as *correct* if it meets the following 3 criteria. 
+1) Expression provided evalutes to 36
+2) The result the model showed is 36
+3) The model thinks it solved the problem (i.e. response does not have "failed")
+
+We use our test set of 200 examples. Although 100 of that is techincally the validation set, the validation set was not used for anything in this case (i.e. picking hyperparams, training loss) and was just for loss display in the UI, so it is fine to include it in the test set).
+
+Here is the perfomance of our custom model vs GPT 3.5-turbo on our test set. Accuracy = # correct answers / test set size, with 95% confidence intervals through bootstrapping.
+| Model                | Accuracy | CI           |
+|----------------------|----------|--------------|
+| GPT 3-5-turbo-1106   | 3.0%     | [1.0%, 5.5%] |
+| Custom Model         | 10.0%    | [6.0%, 14.5%]|
+
+Overall, our custom model ```ft:gpt-3.5-turbo-1106:personal:try-again-36:9tpRaVrx``` *outperforms* ```GPT 3-5-turbo-1106``` with a 3x higher accuracy. 
+
+This repo contains all code for data curation ```fine_tuning_dataset_creator.ipynb``` and evaluation ```comparison.ipynb```, as well as our latest training/validation/test data set.
 
 
