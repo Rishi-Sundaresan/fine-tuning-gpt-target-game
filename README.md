@@ -78,7 +78,7 @@ Here is the perfomance of our custom model vs GPT 3.5-turbo on our test set. Acc
 Overall, our custom model ```ft:gpt-3.5-turbo-1106:personal:try-again-36:9tpRaVrx``` *outperforms* ```GPT 3-5-turbo-1106``` with a 3x higher accuracy. 
 <br><br>
 ### Example Win
-Here is an example where our custom model outperforms GPT 3-5-turbo-1106 for a ```target: 36, numbers: [9, 3, 2, 1]```
+Here is an example where our custom model outperforms GPT 3-5-turbo-1106 for a ```target: 36, numbers: [2, 7, 7, 8]```
 
 GPT 3-5-turbo-1106 Response:
 ````
