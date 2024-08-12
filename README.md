@@ -59,7 +59,7 @@ For simplicity, we did not include any unsolvable problems, so the model should 
 I then made a 500-200 train-test split, and uploaded the training file to the OpenAI fine-tuning UI to fine-tune GPT 3.5-turbo-1106 on the data. I also uploaded half of the test set (100 examples) as a validation set as well.
 ![image](https://github.com/user-attachments/assets/69ab6acb-def8-4a72-baa2-e19af1016500)
 
-Overall it does seem that the training loss converged fairly quickly, but with quite a bit of noise. Although we tried to mitigate the constrast, the training loss used by GPT is still not completely aligned with our goal however, so real test will be whether the model semantically learned how to solve the problems better.
+Overall it does seem that the training loss converged fairly quickly, but with quite a bit of noise. Although we tried to mitigate the contrast, the training loss used by GPT is still not completely aligned with our goal however, so real test will be whether the model semantically learned how to solve the problems better.
 <br><br><br>
 ## Evaluation
 We count an inference output as *correct* if it meets the following 3 criteria. 
