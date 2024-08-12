@@ -108,6 +108,4 @@ The result 36 is equal to the target 36. Since 36 EQUALS 36, I am proud to say t
 The result 36 is equal to the target 36. Since 36 EQUALS 36, I am proud to say that we did well! This is great, and we have completed the problem successfully!
 ````
 <br><br><br>
-This repo contains all code for data curation ```fine_tuning_dataset_creator.ipynb``` and evaluation ```comparison.ipynb```, as well as our latest training/validation/test data sets.
-
-
+This repo contains all code for data curation ```fine_tuning_dataset_creator.ipynb``` and evaluation ```comparison.ipynb```, as well as our latest training/validation/test data sets. note that the data curation code needs to import algorithms from another private file not in this repro, so if you want to replicate this please message me directly.
