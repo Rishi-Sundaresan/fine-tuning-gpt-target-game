@@ -42,7 +42,7 @@ Result: 36
 ````
 
 A couple of notes here:
-1) I included listing the intermediate steps, since in experimentation, doing this prevented the model from creating incorrect expressions that lead to the target, i.e. 1+2+3+4 = 36. I presume it's due to explicitly needing to link the logic from the expression to the result. 
+1) I included listing the intermediate steps, since in experimentation, doing this prevented the model from creating incorrect expressions that it thinks evaluate to the target, i.e. 1+2+3+4 = 36. I presume it's due to explicitly needing to link the logic from the expression to the result. 
 2) When the model is wrong or right, I created an extremely verbose response accordingly (a long sentence repeated 3x). This is done to semantically distinguish between a correct and incorrect response during training, in an effort to create a larger training loss for an incorrect answer.
 
 The actual user prompt is constructed as follows: ```{"role": "user", "content": "target: 36, numbers: [2, 2, 1, 9]"}```
