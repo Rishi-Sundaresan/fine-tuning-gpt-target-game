@@ -1,8 +1,7 @@
 # Fine Tuned GPT 3.5 for 24-style Math Puzzle
 I fine-tuned GPT 3.5-turbo to be better at a math puzzle game, specifically a 24-style game. In this game, you are given 4 numbers, and you must add/subtract/multiply/divide between them to reach a target number. You must use all the numbers.
 
-GPT is notoriously bad at precise math calculations, so I wanted to see if fine-tuning could improve it's performance. Note that the results below are after a few tries at different ways to construct the data and fine-tune the model.
-
+GPT is notoriously bad at precise math calculations, so I wanted to see if fine-tuning could improve it's performance. Overall, our custom model outperforms GPT 3-5-turbo-1106 with a 3x higher accuracy on these problems.
 
 ## Training
 ### Data Curation
@@ -48,13 +47,13 @@ I created a dataset of 700 example setups (all of which have solutions) by the f
 3) Repeat 1-2 until we get 700 setups with solutions.
 
 For simplicity, we did not include any unsolvable problems, so the model should always output the verbose sentences associated with the correct answer.
-
+<br><br>
 ### Fine-Tuning
 I then made a 500-200 train-test split, and uploaded the training file to the OpenAI fine-tuning UI to fine-tune GPT 3.5-turbo-1106 on the data. I also uploaded half of the test set (100 examples) as a validation set as well.
 ![image](https://github.com/user-attachments/assets/69ab6acb-def8-4a72-baa2-e19af1016500)
 
 Overall it does seem that the training loss converged fairly quickly, but with quite a bit of noise. Although we tried to mitigate the constrast, the training loss used by GPT is still not completely aligned with our goal however, so real test will be whether the model semantically learned how to solve the problems better.
-
+<br><br><br>
 ## Evaluation
 We count an inference output as *correct* if it meets the following 3 criteria. 
 1) Expression provided evalutes to 36
@@ -70,7 +69,38 @@ Here is the perfomance of our custom model vs GPT 3.5-turbo on our test set. Acc
 | Custom Model         | 10.0%    | [6.0%, 14.5%]|
 
 Overall, our custom model ```ft:gpt-3.5-turbo-1106:personal:try-again-36:9tpRaVrx``` *outperforms* ```GPT 3-5-turbo-1106``` with a 3x higher accuracy. 
+<br><br>
+### Example Win
+Here is an example where our custom model outperforms GPT 3-5-turbo-1106 for a ```target: 36, numbers: [9, 3, 2, 1]```
 
-This repo contains all code for data curation ```fine_tuning_dataset_creator.ipynb``` and evaluation ```comparison.ipynb```, as well as our latest training/validation/test data set.
+GPT 3-5-turbo-1106 Response:
+````
+Expression: (7 * 8) - (7 - 2)
+Intermediate Steps:
+1. 7 * 8 = 56
+2. 7 - 2 = 5
+3. 56 - 5 = 51
+Result: 51
+
+Option (2): The result 51 is NOT equal to the target 36. This is very bad, and we have failed in this problem. Since 51 DOES NOT EQUAL 36, I am disappointed.
+Option (2): The result 51 is NOT equal to the target 36. This is very bad, and we have failed in this problem. Since 51 DOES NOT EQUAL 36, I am disappointed.
+Option (2): The result 51 is NOT equal to the target 36. This is very bad, and we have failed in this problem. Since 51 DOES NOT EQUAL 36, I am disappointed.
+````
+
+
+Custom Model Response:
+````
+Expression: (7 + 7) * 2 + 8
+Intermediate Steps:
+1. 7 + 7 = 14
+2. 14 * 2 = 28
+3. 28 + 8 = 36
+Result: 36
+The result 36 is equal to the target 36. Since 36 EQUALS 36, I am proud to say that we did well! This is great, and we have completed the problem successfully!
+The result 36 is equal to the target 36. Since 36 EQUALS 36, I am proud to say that we did well! This is great, and we have completed the problem successfully!
+The result 36 is equal to the target 36. Since 36 EQUALS 36, I am proud to say that we did well! This is great, and we have completed the problem successfully!
+````
+<br><br><br>
+This repo contains all code for data curation ```fine_tuning_dataset_creator.ipynb``` and evaluation ```comparison.ipynb```, as well as our latest training/validation/test data sets.
 
 
