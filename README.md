@@ -4,7 +4,7 @@ I fine-tuned GPT 3.5-turbo to be better at a math puzzle game, specifically a 24
 Example:
 ```
 Given [5,11,11,9], make 36:
-Answer: (5 - 11 / 11) * 9
+Answer: (5 - 11 / 11) * 9 = 36
 ```
 
 GPT can have trouble with precise math calculations, so I wanted to see if fine-tuning could improve it's performance. Overall, our custom model outperforms GPT 3-5-turbo-1106 with a 3x higher accuracy on these problems.
