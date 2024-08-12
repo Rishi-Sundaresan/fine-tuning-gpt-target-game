@@ -9,7 +9,7 @@ Answer: (5 - 11 / 11) * 9 = 36
 ```
 
 GPT can have trouble with precise math calculations, so I wanted to see if fine-tuning could improve it's performance. Overall, **our custom model outperforms GPT 3-5-turbo-1106 with a 3x higher accuracy on these problems**.
-
+<br><br>
 ## Training
 ### Data Curation
 I used a target number of 36 instead of 24 since it had a larger problem space. I generated hundreds of different examples of 4 numbers being used to hit 36. I constructed each training example for the fine-tuning job as follows:
