@@ -1,7 +1,13 @@
-# Fine Tuned GPT 3.5 for 24-style Math Puzzles
+# Fine Tuning GPT 3.5 for 24-style Math Puzzles
 I fine-tuned GPT 3.5-turbo to be better at a math puzzle game, specifically a 24-style game. In this game, you are given 4 numbers, and you must add/subtract/multiply/divide between them to reach a target number. You must use all the numbers.
 
-GPT is notoriously bad at precise math calculations, so I wanted to see if fine-tuning could improve it's performance. Overall, our custom model outperforms GPT 3-5-turbo-1106 with a 3x higher accuracy on these problems.
+Example:
+```
+Given [5,11,11,9], make 36:
+Answer: (5 - 11 / 11) * 9
+```
+
+GPT can have trouble with precise math calculations, so I wanted to see if fine-tuning could improve it's performance. Overall, our custom model outperforms GPT 3-5-turbo-1106 with a 3x higher accuracy on these problems.
 
 ## Training
 ### Data Curation
